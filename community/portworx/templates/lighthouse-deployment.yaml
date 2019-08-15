@@ -23,6 +23,15 @@ spec:
         tier: px-web-console
 {{- include "px.labels" . | nindent 8 }}
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: beta.kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       initContainers:
       - name: config-init
         image: "{{ template "px.getLighthouseImages" . }}/lh-config-sync:{{.Values.lighthouseSyncVersion}}"
